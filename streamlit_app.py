@@ -136,6 +136,49 @@ model = bundle["model"]
 FEATURES = bundle["features"]
 TARGETS = bundle["targets"]
 
+# ==========================================
+# MODEL CONFIGURATION INSPECTION
+# ==========================================
+
+st.title("OpenThermoAI Configuration Inspector")
+
+st.subheader("1. Model information")
+
+st.write("Model type:", type(model).__name__)
+
+st.write("Model bundle keys:", list(bundle.keys()))
+
+st.subheader("2. Input features")
+
+st.write("Features:", FEATURES)
+
+st.write("Number of features:", len(FEATURES))
+
+st.subheader("3. Prediction targets")
+
+st.write("Targets:", TARGETS)
+
+st.write("Number of targets:", len(TARGETS))
+
+st.subheader("4. Fitted model configuration")
+
+st.write(
+    "Expected input features:",
+    getattr(model, "n_features_in_", "Not available")
+)
+
+st.write(
+    "Feature names:",
+    getattr(model, "feature_names_in_", "Not available")
+)
+
+st.write(
+    "Number of outputs:",
+    getattr(model, "n_outputs_", "Not available")
+)
+
+st.success("Model configuration inspection completed.")
+
 st.success("OpenThermoAI model is ready!")
 
 st.caption(

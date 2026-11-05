@@ -1,0 +1,30 @@
+!pip install streamlit gdown joblib
+
+import os
+import gdown
+import joblib
+import streamlit as st
+
+MODEL_DIR = "models"
+MODEL_PATH = os.path.join(
+    MODEL_DIR, "openthermoai_model.joblib"
+)
+
+os.makedirs(MODEL_DIR, exist_ok=True)
+
+if not os.path.exists(MODEL_PATH):
+    file_id = "18ZPMFhU303wK_-9Hz-gn4aSwCr-IGHRj"
+
+    url = f"https://drive.google.com/uc?id={file_id}"
+
+    gdown.download(
+        url,
+        MODEL_PATH,
+        quiet=False
+    )
+
+if not os.path.exists(MODEL_PATH):
+    st.error("Trained model could not be downloaded.")
+    st.stop()
+
+model = joblib.load(MODEL_PATH)

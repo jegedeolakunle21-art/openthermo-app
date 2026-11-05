@@ -36,7 +36,7 @@ def load_bundle():
 
     if not os.path.exists(MODEL_PATH):
 
-        file_id = "YOUR_GOOGLE_DRIVE_FILE_ID"
+        file_id = "18ZPMFhU303wK_-9Hz-gn4aSwCr-IGHRj"
 
         url = f"https://drive.google.com/uc?id={file_id}"
 

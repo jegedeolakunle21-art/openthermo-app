@@ -38,6 +38,56 @@ GOOGLE_DRIVE_FILE_ID = "18ZPMFhU303wK_-9Hz-gn4aSwCr-IGHRj"
 
 @st.cache_resource
 def load_bundle():
+@st.cache_resource
+def load_bundle():
+    MODEL_DIR.mkdir(parents=True, exist_ok=True)
+
+    st.info("Step 1: Checking model file...")
+
+    if not MODEL_PATH.exists():
+        st.info("Step 2: Downloading existing trained model...")
+
+        downloaded = gdown.download(
+            id=GOOGLE_DRIVE_FILE_ID,
+            output=str(TEMP_MODEL_PATH),
+            quiet=False
+        )
+
+        if not downloaded or not TEMP_MODEL_PATH.exists():
+            raise FileNotFoundError(
+                "Google Drive model download failed."
+            )
+
+        TEMP_MODEL_PATH.replace(MODEL_PATH)
+
+    st.info("Step 3: Checking downloaded model size...")
+
+    model_size = MODEL_PATH.stat().st_size
+
+    if model_size < 1_000_000:
+        raise ValueError("Downloaded model file is unexpectedly small.")
+
+    st.write(f"Model file size: {model_size / (1024 * 1024):.2f} MB")
+
+    st.info("Step 4: Loading trained model into memory...")
+
+    bundle = joblib.load(MODEL_PATH)
+
+    st.info("Step 5: Model loaded successfully!")
+
+    return bundle
+
+
+bundle = load_bundle()
+
+st.info("Step 6: Checking model components...")
+
+model = bundle["model"]
+FEATURES = bundle["features"]
+TARGETS = bundle["targets"]
+
+st.success("OpenThermoAI model is ready!")
+
 
     # Download the existing model only if it is missing
     if not MODEL_PATH.exists() or MODEL_PATH.stat().st_size == 0:

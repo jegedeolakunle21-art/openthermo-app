@@ -17,8 +17,44 @@ st.set_page_config(
 )
 
 @st.cache_resource
+import os
+import joblib
+import gdown
+import streamlit as st
+
+MODEL_DIR = "models"
+
+MODEL_PATH = os.path.join(
+    MODEL_DIR,
+    "openthermoai_model.joblib"
+)
+
+os.makedirs(MODEL_DIR, exist_ok=True)
+
+@st.cache_resource
 def load_bundle():
+
+    if not os.path.exists(MODEL_PATH):
+
+        file_id = "YOUR_GOOGLE_DRIVE_FILE_ID"
+
+        url = f"https://drive.google.com/uc?id={file_id}"
+
+        downloaded_file = gdown.download(
+            url,
+            MODEL_PATH,
+            quiet=False
+        )
+
+        if downloaded_file is None:
+            raise FileNotFoundError(
+                "Unable to download the trained model."
+            )
+
     return joblib.load(MODEL_PATH)
+
+
+bundle = load_bundle()
 
 bundle = load_bundle()
 model = bundle["model"]

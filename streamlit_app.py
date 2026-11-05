@@ -225,7 +225,6 @@ page = st.sidebar.radio(
         "Home",
         "Performance Prediction",
         "Scenario Analysis",
-        "Model Validation",
         "About OpenThermoAI"
     ]
 )
@@ -697,62 +696,6 @@ elif page == "Scenario Analysis":
                 "No existing scenario dataset was found. "
                 "You can upload a CSV to begin scenario analysis."
             )
-
-
-# =====================================================
-# 11. MODEL VALIDATION
-# =====================================================
-
-elif page == "Model Validation":
-
-    st.header("Model Validation and Performance")
-
-    st.write(
-        "This section displays existing validation metrics "
-        "when the validation dataset is available."
-    )
-
-    if METRICS_PATH.exists():
-
-        try:
-            metrics = pd.read_csv(METRICS_PATH)
-
-            st.success("Validation metrics file loaded.")
-
-            st.dataframe(
-                metrics,
-                use_container_width=True
-            )
-
-            st.download_button(
-                "Download Validation Metrics",
-                data=metrics.to_csv(
-                    index=False
-                ).encode("utf-8"),
-                file_name="openthermoai_validation_metrics.csv",
-                mime="text/csv"
-            )
-
-        except Exception as error:
-
-            st.error("Could not read validation metrics.")
-            st.exception(error)
-
-    else:
-
-        st.warning(
-            "The model validation metrics file was not found."
-        )
-
-        st.caption(
-            "Expected location: reports/model_validation_metrics.csv"
-        )
-
-        st.info(
-            "No validation scores are being invented or "
-            "estimated by this dashboard."
-        )
-
 
 # =====================================================
 # 12. ABOUT OPEN THERMO AI
